@@ -1,5 +1,5 @@
 # KampongCham
-This repository contains the code and data used for [Dengue modeling in rural Cambodia: statistical performance versus epidemiological relevance] 
+This repository contains the code and data used for [Dengue modeling in rural Cambodia: statistical performance versus epidemiological relevance] (doi: https://doi.org/10.1101/208876 ) (preprint)
 
 Using SSM software to reproduce the calculations
 1.	Install SSM software on your machine as indicated in https://github.com/JDureau/ssm
