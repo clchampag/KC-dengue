@@ -15,6 +15,7 @@ N=161391
 
 
 
+
 epidemio_attack_rate=function(path, S, to_sum_S, incidence, to_sum,mcmc){
   fileNames = list.files(file.path(path,mcmc), pattern = "X_128.csv*", full.names = T)
   fileDf = fread(fileNames[1], sep = ",", select = c("date",incidence,S,"index"))
@@ -30,7 +31,7 @@ epidemio_attack_rate=function(path, S, to_sum_S, incidence, to_sum,mcmc){
   attack_rate=fileDf[, sum(eval(parse(text = to_sum))), by = c("year", "index")]
   tot=merge(Susceptibles,attack_rate, all=T, by=c("year","index"))
   tot$attack_rate=100*tot$V1/tot$S_tot
-  tot=tot[tot$year<2016,]
+  tot=as.data.table(tot[tot$year<2016,])
   
   med_attack_rate=tot[, median(attack_rate), by = c("year")]
   names(med_attack_rate)=c("date","med")
@@ -53,12 +54,12 @@ AR_pandey=epidemio_attack_rate(pathPandey,S="Hs",to_sum_S = "Hs",incidence = "in
 AR_seiar=epidemio_attack_rate(pathSEIAR,S="S",to_sum_S = "S",incidence=c("incidence_I", "incidence_H","incidence_asympto"),to_sum = "incidence_I+incidence_H+incidence_asympto",mcmc="mcmc")
 AR_seir2_1=epidemio_attack_rate(pathSEIR2,S=c("S","S2"),to_sum_S="S+S2",incidence=c("inc_I1","inc_I21"), to_sum="inc_I1+inc_I21",mcmc="mcmc")
 AR_seir2_2=epidemio_attack_rate(pathSEIR2,S=c("S","S1"),to_sum_S="S+S1",incidence=c("inc_I2","inc_I12"), to_sum="inc_I2+inc_I12",mcmc="mcmc")
-AR_seir3_1=epidemio_attack_rate(pathSEIR3,S=c("S","S2"),to_sum_S="S+S2",incidence=c("inc_I1","inc_I21"), to_sum="inc_I1+inc_I21",mcmc="mcmc")
-AR_seir3_2=epidemio_attack_rate(pathSEIR3,S=c("S","S1"),to_sum_S="S+S1",incidence=c("inc_I2","inc_I12"), to_sum="inc_I2+inc_I12",mcmc="mcmc")
+AR_seir3_1=epidemio_attack_rate(pathSEIR2_psi,S=c("S","S2"),to_sum_S="S+S2",incidence=c("inc_I1","inc_I21"), to_sum="inc_I1+inc_I21",mcmc="mcmc")
+AR_seir3_2=epidemio_attack_rate(pathSEIR2_psi,S=c("S","S1"),to_sum_S="S+S1",incidence=c("inc_I2","inc_I12"), to_sum="inc_I2+inc_I12",mcmc="mcmc")
 AR_seir2_I=epidemio_attack_rate(pathSEIR2,S=c("S"),to_sum_S="S",incidence=c("inc_I1","inc_I2"), to_sum="inc_I1+inc_I2",mcmc="mcmc")
-AR_seir3_I=epidemio_attack_rate(pathSEIR3,S=c("S"),to_sum_S="S",incidence=c("inc_I1","inc_I2"), to_sum="inc_I1+inc_I2",mcmc="mcmc")
+AR_seir3_I=epidemio_attack_rate(pathSEIR2_psi,S=c("S"),to_sum_S="S",incidence=c("inc_I1","inc_I2"), to_sum="inc_I1+inc_I2",mcmc="mcmc")
 AR_seir2_II=epidemio_attack_rate(pathSEIR2,S=c("S1","S2"),to_sum_S="S1+S2",incidence=c("inc_I12","inc_I21"), to_sum="inc_I12+inc_I21",mcmc="mcmc")
-AR_seir3_II=epidemio_attack_rate(pathSEIR3,S=c("S1","S2"),to_sum_S="S1+S2",incidence=c("inc_I21","inc_I12"), to_sum="inc_I12+inc_I21",mcmc="mcmc")
+AR_seir3_II=epidemio_attack_rate(pathSEIR2_psi,S=c("S1","S2"),to_sum_S="S1+S2",incidence=c("inc_I21","inc_I12"), to_sum="inc_I12+inc_I21",mcmc="mcmc")
 
 summary(AR_seir$med)
 summary(AR_laneri$med)

@@ -29,6 +29,6 @@ dir_det=file.path(dir_model,"mcmc")
 #system(cmd)
 
 # SIMULATE FROM POSTERIOR
-cmd <- sprintf(" cd %s/bin; ssm-predict ../theta_pmcmc_det2.json ../mcmc/X_1.csv ../mcmc/trace_1.csv 2002-01-07 | ./simul -I 128 --start 2002-01-07  --end 2025-12-31 --verbose --hat --traj --root ../%s",dir_model,dir_det)
+cmd <- sprintf(" cd %s/bin; ssm-predict ../theta_pmcmc_det2.json ../mcmc/X_1.csv ../mcmc/trace_1.csv 2002-01-07 | ./simul -I 128 --start 2002-01-07  --end 2016-01-01 --verbose --freq 7 --traj --root ../%s",dir_model,dir_det)
 system(cmd)
 
