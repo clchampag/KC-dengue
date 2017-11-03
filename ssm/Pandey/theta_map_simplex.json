@@ -1,0 +1,66 @@
+{
+  "resources": [
+    {
+      "name": "values",
+      "data": {
+        "i": 2.2562526159749618E-41,
+        "pr_Hi": 1.076924201584374E-234,
+        "pr_Hs": 0.36830236003691297,
+        "pr_Vi": 0.000068580101093241929,
+        "phase": -0.014041133586561864,
+        "R0": 3.3366264636203971,
+        "beta1": 0.81139115447658827,
+        "rep_ndss": 0.1442784798932924,
+        "baV": 0.10000000000000001
+      },
+      "description": "initial values for the parameters"
+    },
+    {
+      "name": "covariance",
+      "data": {
+        "i": {
+          "i": 0.47948678908869602
+        },
+        "pr_Hi": {
+          "pr_Hi": 1.7476283689029499
+        },
+        "pr_Hs": {
+          "pr_Hs": 0.043310016037568601
+        },
+        "pr_Vi": {
+          "pr_Vi": 0.000077745249868161096
+        },
+        "phase": {
+          "phase": 0.0176743548829108
+        },
+        "R0": {
+          "R0": 1.7313312962651299
+        },
+        "beta1": {
+          "beta1": 0.037583072641864397
+        },
+        "rep_ndss": {
+          "rep_ndss": 0.0211896631866694
+        },
+        "baV": {
+          "baV": 0.029044493092224
+        }
+      },
+      "description": "covariance matrix"
+    },
+    {
+      "name": "summary",
+      "data": {
+        "id": 0,
+        "n_parameters": 9,
+        "AIC": null,
+        "log_ltp": -2382.1664218724827,
+        "AICc": null,
+        "DIC": null,
+        "log_likelihood": null,
+        "n_data": 656,
+        "sum_squares": null
+      }
+    }
+  ]
+}

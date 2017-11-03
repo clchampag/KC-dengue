@@ -1,0 +1,58 @@
+{
+  "resources": [
+    {
+      "data": {
+        "beta1": 0.61097750505614479,
+        "R0": 2.3115313218439923,
+        "i": 5.9374346276995755E-9,
+        "pr_S": 0.4665218839240442,
+        "pr_I": 19.26624181486854,
+        "rep_ndss": 0.17135896329561917,
+        "phase": -0.039890048758051785
+      },
+      "name": "values",
+      "description": "initial values for the parameters"
+    },
+    {
+      "data": {
+        "beta1": {
+          "beta1": 0.077185248723253594
+        },
+        "R0": {
+          "R0": 1.29410581989214
+        },
+        "i": {
+          "i": 0.86422009649686504
+        },
+        "pr_S": {
+          "pr_S": 0.034132513294979003
+        },
+        "pr_I": {
+          "pr_I": 6.7907457426190403
+        },
+        "rep_ndss": {
+          "rep_ndss": 0.074411732004955405
+        },
+        "phase": {
+          "phase": 0.013334910548292099
+        }
+      },
+      "name": "covariance",
+      "description": "covariance matrix"
+    },
+    {
+      "data": {
+        "n_data": 656,
+        "id": 0,
+        "sum_squares": null,
+        "log_likelihood": null,
+        "n_parameters": 7,
+        "AIC": null,
+        "AICc": null,
+        "DIC": null,
+        "log_ltp": -2387.4011260639745
+      },
+      "name": "summary"
+    }
+  ]
+}

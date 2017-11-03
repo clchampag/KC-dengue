@@ -1,0 +1,363 @@
+{
+  "data": [
+    {
+      "name": "incidence_ndss_obs",
+      "require": {
+        "path": "data/data.csv",
+        "fields": [
+          "date",
+          "incidence_ndss_obs"
+        ]
+      }
+    },
+    {
+      "name": "incidence_denfree_obs",
+      "require": {
+        "path": "data/data.csv",
+        "fields": [
+          "date",
+          "incidence_denfree_obs"
+        ]
+      }
+    },
+    {
+      "name": "rep_denfree",
+      "require": {
+        "path": "data/data.csv",
+        "fields": [
+          "date",
+          "rep_denfree"
+        ]
+      }
+    },
+    {
+      "name": "incidence_asympto_obs",
+      "require": {
+        "path": "data/data.csv",
+        "fields": [
+          "date",
+          "incidence_asympto_obs"
+        ]
+      }
+    },
+    {
+      "name": "rep_asympto",
+      "require": {
+        "path": "data/data.csv",
+        "fields": [
+          "date",
+          "rep_asympto"
+        ]
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "name": "N",
+      "description": "population size",
+      "require": {
+        "name": "N",
+        "path": "priors/N.json"
+      }
+    },
+    {
+      "name": "S",
+      "description": "initial number",
+      "transformation": "pr_S*N",
+      "require": {
+        "name": "pr_S",
+        "path": "priors/pr_S.json"
+      }
+    },
+    {
+      "name": "I",
+      "description": "initial number",
+      "transformation": "pr_I",
+      "require": {
+        "name": "pr_I",
+        "path": "priors/pr_I.json"
+      }
+    },
+    {
+      "name": "E",
+      "description": "initial number",
+      "transformation": "3*pr_I"
+    },
+    {
+      "name": "A",
+      "description": "initial number",
+      "transformation": "pr_I"
+    },
+    {
+      "name": "H",
+      "description": "initial number",
+      "transformation": "pr_I"
+    },
+    {
+      "name": "i",
+      "description": "import parameter",
+      "require": {
+        "name": "i",
+        "path": "priors/i.json"
+      }
+    },
+    {
+      "name": "R0",
+      "description": "transmission parameter",
+      "require": {
+        "name": "R0",
+        "path": "priors/R0.json"
+      }
+    },
+    {
+      "name": "beta1",
+      "description": "amplitude seasonality",
+      "require": {
+        "name": "beta1",
+        "path": "priors/beta1.json"
+      }
+    },
+    {
+      "name": "gamma",
+      "description": "rate of recovery",
+      "transformation": "1/pr_gamma",
+      "require": {
+        "name": "pr_gamma",
+        "path": "priors/pr_gamma.json"
+      }
+    },
+    {
+      "name": "rep_ndss",
+      "description": "transmission parameter",
+      "require": {
+        "name": "rep_ndss",
+        "path": "priors/rep_ndss.json"
+      }
+    },
+    {
+      "name": "rep_denfree",
+      "description": "reporting rate",
+      "require": {
+        "path": "data/data.csv",
+        "fields": [
+          "date",
+          "rep_denfree"
+        ]
+      }
+    },
+    {
+      "name": "rep_asympto",
+      "description": "reporting rate",
+      "require": {
+        "path": "data/data.csv",
+        "fields": [
+          "date",
+          "rep_asympto"
+        ]
+      }
+    },
+    {
+      "name": "rho_a",
+      "description": "proba asymptomatic",
+      "require": {
+        "name": "rho_a",
+        "path": "priors/rho_a.json"
+      }
+    },
+    {
+      "name": "rho_h",
+      "description": "proba hospital",
+      "require": {
+        "name": "rho_h",
+        "path": "priors/rho_h.json"
+      }
+    },
+    {
+      "name": "psi",
+      "description": "underinfectivity",
+      "require": {
+        "name": "psi",
+        "path": "priors/psi.json"
+      }
+    },
+    {
+      "name": "khi",
+      "description": "underinfectivity",
+      "require": {
+        "name": "khi",
+        "path": "priors/khi.json"
+      }
+    },
+    {
+      "name": "sigma",
+      "description": "rate of incubation",
+      "transformation": "1/pr_sigma",
+      "require": {
+        "name": "pr_sigma",
+        "path": "priors/pr_sigma.json"
+      }
+    },
+    {
+      "name": "phase",
+      "description": "phase of the sinusoidal beta",
+      "require": {
+        "name": "phase",
+        "path": "priors/phase.json"
+      }
+    },
+    {
+      "name": "mu",
+      "description": "birth rate",
+      "require": {
+        "name": "mu",
+        "path": "priors/mu.json"
+      }
+    },
+    {
+      "name": "disp",
+      "description": "overdispersion",
+      "require": {
+        "name": "disp",
+        "path": "priors/disp.json"
+      }
+    }
+  ],
+  "populations": [
+    {
+      "name": "Kampong Cham",
+      "composition": [
+        "S",
+        "E",
+        "I",
+        "H",
+        "A",
+        "R"
+      ],
+      "remainder": {
+        "name": "R",
+        "pop_size": "N"
+      }
+    }
+  ],
+  "reactions": [
+    {
+      "from": "S",
+      "to": "E",
+      "description": "infection",
+      "rate": "R0*(gamma+mu)*((sigma+mu)/sigma)*(1 + beta1*sin(2*PI*(t/365+phase)))*(I+psi*A+khi*H+i)/N",
+      "keywords": [
+        "transmission"
+      ]
+    },
+    {
+      "from": "E",
+      "to": "I",
+      "description": "incubation",
+      "rate": "sigma*(1-rho_a)*(1-rho_h)",
+      "accumulators": [
+        "incidence_I"
+      ]
+    },
+    {
+      "from": "E",
+      "to": "H",
+      "description": "incubation",
+      "rate": "sigma*rho_h*(1-rho_a)",
+      "accumulators": [
+        "incidence_H"
+      ]
+    },
+    {
+      "from": "E",
+      "to": "A",
+      "description": "incubation",
+      "rate": "sigma*rho_a",
+      "accumulators": [
+        "incidence_asympto"
+      ]
+    },
+    {
+      "from": "I",
+      "to": "R",
+      "description": "recovery",
+      "rate": "gamma"
+    },
+    {
+      "from": "A",
+      "to": "R",
+      "description": "recovery",
+      "rate": "gamma"
+    },
+    {
+      "from": "H",
+      "to": "R",
+      "description": "recovery",
+      "rate": "gamma"
+    },
+    {
+      "from": "U",
+      "to": "S",
+      "description": "birth",
+      "rate": "mu*N"
+    },
+    {
+      "from": "S",
+      "to": "U",
+      "description": "age",
+      "rate": "mu"
+    },
+    {
+      "from": "R",
+      "to": "U",
+      "description": "age",
+      "rate": "mu"
+    },
+    {
+      "from": "E",
+      "to": "U",
+      "description": "age",
+      "rate": "mu"
+    },
+    {
+      "from": "A",
+      "to": "U",
+      "description": "age",
+      "rate": "mu"
+    },
+    {
+      "from": "H",
+      "to": "U",
+      "description": "age",
+      "rate": "mu"
+    },
+    {
+      "from": "I",
+      "to": "U",
+      "description": "age",
+      "rate": "mu"
+    }
+  ],
+  "observations": [
+    {
+      "name": "incidence_denfree_obs",
+      "start": "2001-12-31",
+      "distribution": "discretized_normal",
+      "mean": "rep_denfree* (incidence_I + incidence_H)",
+      "sd": "sqrt(rep_denfree*(incidence_I + incidence_H) +  (pow(rep_denfree*(incidence_I + incidence_H),2)*disp))"
+    },
+    {
+      "name": "incidence_asympto_obs",
+      "start": "2001-12-31",
+      "distribution": "discretized_normal",
+      "mean": "rep_asympto* (incidence_asympto)",
+      "sd": "sqrt(rep_asympto*(incidence_asympto) +  (pow(rep_asympto*(incidence_asympto),2)*disp))"
+    },
+    {
+      "name": "incidence_ndss_obs",
+      "start": "2001-12-31",
+      "distribution": "discretized_normal",
+      "mean": "rep_ndss* (incidence_H)",
+      "sd": "sqrt(rep_ndss*(incidence_H) +  (pow(rep_ndss*(incidence_H),2)*disp))"
+    }
+  ]
+}
