@@ -48,17 +48,6 @@ my_plot_trace=function(model, mcmc, name, mod){
   names(trace)=names_trace(mod)
   trace_melt=melt(trace, id.vars = "index")
   trace_melt=trace_melt[trace_melt$variable !="fitness",]
-  # list_trace <- llply(file.path((paste(model,mcmc, sep="")),trace_files),read.csv, .progress="text")
-  # length_trace <- sapply(list_trace, nrow)
-  # add_to_index <- c(0,cumsum(length_trace)[-length(length_trace)])
-  # for(chain in seq_along(add_to_index)){
-  #   list_trace[[chain]]$index <- list_trace[[chain]]$index + add_to_index[chain]
-  # }	
-  # 
-  # names(list_trace[[1]])=names_trace(mod)
-  # fitted_theta <- setdiff(names(list_trace[[1]]),c("fitness","index"))
-  # my_mcmc <- mcmc.list(llply(list_trace,function(x) {mcmc(x[fitted_theta])}))
-  # p=ggplot()
   p= qplot(index, value, data=trace_melt, geom="line")+facet_grid(variable ~ ., scales="free")+
     theme(panel.background = element_rect(fill = 'white', colour = 'white'))+xlab("")+ylab("")+ 
     theme(strip.text.x = element_text(size = 40))

@@ -61,18 +61,6 @@ AR_seir3_I=epidemio_attack_rate(pathSEIR2_psi,S=c("S"),to_sum_S="S",incidence=c(
 AR_seir2_II=epidemio_attack_rate(pathSEIR2,S=c("S1","S2"),to_sum_S="S1+S2",incidence=c("inc_I12","inc_I21"), to_sum="inc_I12+inc_I21",mcmc="mcmc")
 AR_seir3_II=epidemio_attack_rate(pathSEIR2_psi,S=c("S1","S2"),to_sum_S="S1+S2",incidence=c("inc_I21","inc_I12"), to_sum="inc_I12+inc_I21",mcmc="mcmc")
 
-summary(AR_seir$med)
-summary(AR_laneri$med)
-summary(AR_pandey$med)
-summary(AR_seiar$med)
-summary(AR_seir2_1$med)
-summary(AR_seir2_2$med)
-summary(AR_seir3_1$med)
-summary(AR_seir3_2$med)
-summary(AR_seir2_I$med)
-summary(AR_seir3_I$med)
-summary(AR_seir2_II$med)
-summary(AR_seir3_II$med)
 
 names(AR_seir)=c("date", "med_seir",  "q025_seir" ,"q975_seir")
 names(AR_laneri)=c("date", "med_lan",  "q025_lan" ,"q975_lan" )
