@@ -1,61 +1,65 @@
 {
   "resources": [
     {
-      "description": "initial values for the parameters",
       "name": "values",
+      "description": "initial values for the parameters",
       "data": {
-        "rho_h": 0.18502986558884993,
-        "R0": 2.3036508728744489,
-        "beta1": 0.58060624891561274,
-        "phase": -0.038463887193369843,
-        "pr_I": 7.3694562871383571,
-        "i": 0.057618710035376247,
-        "rho_a": 0.14020122045161673,
-        "pr_S": 0.47002150139428622
+        "R0": 2.2986684952284562,
+        "beta1": 0.56602560816782488,
+        "rho_h": 0.1354196897337332,
+        "i": 1.4412542355899441E-70,
+        "disp": 0.90415973067640965,
+        "rho_a": 0.15234614121110704,
+        "phase": -0.038865976232465009,
+        "pr_S": 0.46612353411359159,
+        "pr_I": 8.0826399791597527
       }
     },
     {
-      "description": "covariance matrix",
       "name": "covariance",
+      "description": "covariance matrix",
       "data": {
-        "rho_h": {
-          "rho_h": 0.02
-        },
         "R0": {
           "R0": 0.02
         },
         "beta1": {
           "beta1": 0.02
         },
-        "pr_I": {
-          "pr_I": 0.02
-        },
-        "phase": {
-          "phase": 0.02
+        "rho_h": {
+          "rho_h": 0.02
         },
         "i": {
           "i": 0.02
         },
+        "disp": {
+          "disp": 0.02
+        },
         "rho_a": {
           "rho_a": 0.02
         },
+        "phase": {
+          "phase": 0.02
+        },
         "pr_S": {
           "pr_S": 0.02
+        },
+        "pr_I": {
+          "pr_I": 0.02
         }
       }
     },
     {
       "name": "summary",
       "data": {
-        "id": 0,
-        "sum_squares": null,
-        "n_parameters": 8,
+        "id": 5639,
         "AIC": null,
-        "log_likelihood": null,
+        "log_ltp": -2234.6035047771225,
+        "sum_squares": null,
         "AICc": null,
         "DIC": null,
-        "log_ltp": -2537.0577249602029,
-        "n_data": 686
+        "log_likelihood": null,
+        "n_parameters": 9,
+        "n_data": 704
       }
     }
   ]
