@@ -52,10 +52,7 @@ AR_seir=epidemio_attack_rate(pathSEIR,S="S",to_sum_S = "S",incidence = "incidenc
 AR_laneri=epidemio_attack_rate(pathLaneri,S="S",to_sum_S = "S",incidence = "incidence", to_sum="incidence",mcmc="mcmc")
 AR_pandey=epidemio_attack_rate(pathPandey,S="Hs",to_sum_S = "Hs",incidence = "incidence", to_sum="incidence",mcmc="mcmc")
 AR_seiar=epidemio_attack_rate(pathSEIAR,S="S",to_sum_S = "S",incidence=c("incidence_I", "incidence_H","incidence_asympto"),to_sum = "incidence_I+incidence_H+incidence_asympto",mcmc="mcmc")
-AR_seir2_1=epidemio_attack_rate(pathSEIR2,S=c("S","S2"),to_sum_S="S+S2",incidence=c("inc_I1","inc_I21"), to_sum="inc_I1+inc_I21",mcmc="mcmc")
-AR_seir2_2=epidemio_attack_rate(pathSEIR2,S=c("S","S1"),to_sum_S="S+S1",incidence=c("inc_I2","inc_I12"), to_sum="inc_I2+inc_I12",mcmc="mcmc")
-AR_seir3_1=epidemio_attack_rate(pathSEIR2_psi,S=c("S","S2"),to_sum_S="S+S2",incidence=c("inc_I1","inc_I21"), to_sum="inc_I1+inc_I21",mcmc="mcmc")
-AR_seir3_2=epidemio_attack_rate(pathSEIR2_psi,S=c("S","S1"),to_sum_S="S+S1",incidence=c("inc_I2","inc_I12"), to_sum="inc_I2+inc_I12",mcmc="mcmc")
+
 AR_seir2_I=epidemio_attack_rate(pathSEIR2,S=c("S"),to_sum_S="S",incidence=c("inc_I1","inc_I2"), to_sum="inc_I1+inc_I2",mcmc="mcmc")
 AR_seir3_I=epidemio_attack_rate(pathSEIR2_psi,S=c("S"),to_sum_S="S",incidence=c("inc_I1","inc_I2"), to_sum="inc_I1+inc_I2",mcmc="mcmc")
 AR_seir2_II=epidemio_attack_rate(pathSEIR2,S=c("S1","S2"),to_sum_S="S1+S2",incidence=c("inc_I12","inc_I21"), to_sum="inc_I12+inc_I21",mcmc="mcmc")

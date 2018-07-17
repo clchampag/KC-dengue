@@ -66,21 +66,13 @@ mse_ndss=function(path, mcmc, start_date, end_date, cut_date, burn=0 ,pattern="X
   names(data)=c("date", "data")
   fileDf=fileDf[as.Date(fileDf$date)>=start_date & as.Date(fileDf$date)<=end_date & fileDf$index>=burn,]
   test=merge(fileDf, data, by="date")
-  test$SE=(test$incidence_ndss_obs-test$data)^2
-  test$SE_ran=(test$ran_incidence_ndss_obs-test$data)^2
-  test$AE_ran=abs(test$ran_incidence_ndss_obs-test$data)
   
-  mse=test[, mean(SE), by = c("index")]
+  test$SE_ran=(test$ran_incidence_ndss_obs-test$data)^2
+  
   mse_ran=test[, mean(SE_ran), by = c("index")]
   mse_before=test[as.Date(test$date)< cut_date, mean(SE_ran), by = c("index")]
   mse_after=test[as.Date(test$date)>= cut_date, mean(SE_ran), by = c("index")]
-  mae_ran=test[, mean(AE_ran), by = c("index")]
   
-  print(c("with obs. noise",mean(sqrt(mse_ran$V1))))
-  print(c("with obs. noise quantiles ",quantile(sqrt(mse_ran$V1), probs = c(0.025,0.5,0.975))))
-  print(c("MAE with obs. noise quantiles ",quantile((mae_ran$V1), probs = c(0.025,0.5,0.975))))
-  print(c("with obs. noise before ",mean(sqrt(mse_before$V1))))
-  print(c("with obs. noise after",mean(sqrt(mse_after$V1))))
   return(c(mse=mean(sqrt(mse_ran$V1)),mse_q025=quantile(sqrt(mse_ran$V1), probs = c(0.025)),mse_q975=quantile(sqrt(mse_ran$V1), probs = c(0.975)), 
            mse_before=mean(sqrt(mse_before$V1)),mse_before_q025=quantile(sqrt(mse_before$V1), probs = c(0.025)),mse_before_q975=quantile(sqrt(mse_before$V1), probs = c(0.975)), 
            mse_after=mean(sqrt(mse_after$V1)),mse_after_q025=quantile(sqrt(mse_after$V1), probs = c(0.025)),mse_after_q975=quantile(sqrt(mse_after$V1), probs = c(0.975))))
@@ -169,8 +161,6 @@ nothing=c("","","","","")
 rmse_ndss=c(write_mse(SEIR_ndss),write_mse(Laneri_ndss),write_mse(Pandey_ndss),write_mse(SEIAR_ndss),write_mse(SEIR2_ndss),write_mse(SEIR2_psi_ndss))
 rmse_ndss_before=c(write_mse(SEIR_ndss,my_subset = "_before"),write_mse(Laneri_ndss,my_subset = "_before"),write_mse(Pandey_ndss,my_subset = "_before"),write_mse(SEIAR_ndss,my_subset = "_before"),write_mse(SEIR2_ndss,my_subset = "_before"),write_mse(SEIR2_psi_ndss,my_subset = "_before"))
 rmse_ndss_after=c(write_mse(SEIR_ndss,my_subset = "_after"),write_mse(Laneri_ndss,my_subset = "_after"),write_mse(Pandey_ndss,my_subset = "_after"),write_mse(SEIAR_ndss,my_subset = "_after"),write_mse(SEIR2_ndss,my_subset = "_after"),write_mse(SEIR2_psi_ndss,my_subset = "_after"))
-#rmse_ndss_before=round(c(SEIR_ndss["mse_before"],Laneri_ndss["mse_before"],Pandey_ndss["mse_before"],SEIAR_ndss["mse_before"],SEIR2_ndss["mse_before"],SEIR2_psi_ndss["mse_before"]), digits=1)
-#rmse_ndss_after=round(c(SEIR_ndss["mse_after"],Laneri_ndss["mse_after"],Pandey_ndss["mse_after"],SEIAR_ndss["mse_after"],SEIR2_ndss["mse_after"],SEIR2_psi_ndss["mse_after"]), digits=1)
 
 rmse_denfree=c(write_mse(SEIR_denfree),write_mse(Laneri_denfree),write_mse(Pandey_denfree),write_mse(SEIAR_denfree),write_mse(SEIR2_denfree),write_mse(SEIR2_psi_denfree))
 rmse_proj=c(write_mse(SEIR_proj),write_mse(Laneri_proj),write_mse(Pandey_proj),write_mse(SEIAR_proj),write_mse(SEIR2_proj),write_mse(SEIR2_psi_proj))

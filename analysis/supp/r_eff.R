@@ -18,10 +18,10 @@ N=161391
 
 # Effective reproduction umber (one strain models)
 reff_onestrain = function(path,N,S,name){
-  fileNames = list.files(file.path(path,"mcmc"), pattern = paste0("X_128.csv"), full.names = T)
+  fileNames = list.files(file.path(path,"mcmc"), pattern = "X_128.csv", full.names = T)
   fileDf = fread(fileNames[1], sep = ",", select = c("date", S,"index"))
   names(fileDf)=c("date","S","index")
-  fileNames = list.files(file.path(path,"mcmc"), pattern = paste0("trace_1.csv"), full.names = T)
+  fileNames = list.files(file.path(path,"mcmc"), pattern = "trace_1.csv", full.names = T)
   fileTrace = fread(fileNames[1], sep = ",")
   fileTrace2=fileTrace[(index*1000/length(unique(index)))%%1==0]
   fileTrace2$index=seq(0:999)-1
@@ -43,9 +43,9 @@ reff_onestrain = function(path,N,S,name){
 
 # Effective reproduction umber (Pandey model)
 Reff_pandey = function(path,N,name){
-  fileNames = list.files(file.path(path,"mcmc"), pattern = paste0("X_128.csv"), full.names = T)
+  fileNames = list.files(file.path(path,"mcmc"), pattern = "X_128.csv", full.names = T)
   fileDf = fread(fileNames[1], sep = ",", select = c("date","Hs","Vs","index"))
-  fileNames = list.files(file.path(path,"mcmc"), pattern = paste0("trace_1.csv"), full.names = T)
+  fileNames = list.files(file.path(path,"mcmc"), pattern = "trace_1.csv", full.names = T)
   fileTrace = fread(fileNames[1], sep = ",")
   fileTrace2=fileTrace[(index*1000/length(unique(index)))%%1==0]
   fileTrace2$index=seq(0:999)-1
@@ -67,10 +67,10 @@ Reff_pandey = function(path,N,name){
 
 # Effective reproduction number (two strain model)
 Reff_strains = function(path,N,S,S1,name){
-  fileNames = list.files(file.path(path,"mcmc"), pattern = paste0("X_128.csv"), full.names = T)
+  fileNames = list.files(file.path(path,"mcmc"), pattern = "X_128.csv", full.names = T)
   fileDf = fread(fileNames[1], sep = ",", select = c("date",S,S1,"index"))
   names(fileDf)=c("date","S","S1","index")
-  fileNames = list.files(file.path(path,"mcmc"), pattern = paste0("trace_1.csv"), full.names = T)
+  fileNames = list.files(file.path(path,"mcmc"), pattern = "trace_1.csv", full.names = T)
   fileTrace = fread(fileNames[1], sep = ",")
   fileTrace2=fileTrace[(index*1000/length(unique(index)))%%1==0]
   fileTrace2$index=seq(0:999)-1
@@ -93,10 +93,10 @@ Reff_strains = function(path,N,S,S1,name){
 
 # Effective reproduction umber (two strain models with interaction (psi))
 Reff_strains_psi = function(path,N,S,S1, I2, I12,name){
-  fileNames = list.files(file.path(path,"mcmc"), pattern = paste0("X_128.csv"), full.names = T)
+  fileNames = list.files(file.path(path,"mcmc"), pattern = "X_128.csv", full.names = T)
   fileDf = fread(fileNames[1], sep = ",", select = c("date",S,S1,I2,I12,"index"))
   names(fileDf)=c("date","S","S1","I2","I12","index")
-  fileNames = list.files(file.path(path,"mcmc"), pattern = paste0("trace_1.csv"), full.names = T)
+  fileNames = list.files(file.path(path,"mcmc"), pattern = "trace_1.csv", full.names = T)
   fileTrace = fread(fileNames[1], sep = ",")
   fileTrace2=fileTrace[(index*1000/length(unique(index)))%%1==0]
   fileTrace2$index=seq(0:999)-1
@@ -193,6 +193,8 @@ re3=ggplot(mdata3,aes_string(x='date')) +geom_line(aes_string( y="value", group=
   theme(legend.key.size = unit(2, "cm"), legend.text = element_text(size=30))
 
 
+
+### Combine plots
 hlay <- rbind(c(1),
               c(2),
               c(3))

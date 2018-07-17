@@ -59,21 +59,12 @@ mse_ndss=function(path, start_date, end_date, cut_date, burn=0 ,pattern="X_128.c
   names(data)=c("date", "data")
   fileDf=fileDf[as.Date(fileDf$date)>=start_date & as.Date(fileDf$date)<=end_date & fileDf$index>=burn,]
   test=merge(fileDf, data, by="date")
-  test$SE=(test$incidence_ndss_obs-test$data)^2
   test$SE_ran=(test$ran_incidence_ndss_obs-test$data)^2
-  test$AE_ran=abs(test$ran_incidence_ndss_obs-test$data)
   
-  mse=test[, mean(SE), by = c("index")]
   mse_ran=test[, mean(SE_ran), by = c("index")]
   mse_before=test[as.Date(test$date)< cut_date, mean(SE_ran), by = c("index")]
   mse_after=test[as.Date(test$date)>= cut_date, mean(SE_ran), by = c("index")]
-  mae_ran=test[, mean(AE_ran), by = c("index")]
   
-  print(c("with obs. noise",mean(sqrt(mse_ran$V1))))
-  print(c("with obs. noise quantiles ",quantile(sqrt(mse_ran$V1), probs = c(0.025,0.5,0.975))))
-  print(c("MAE with obs. noise quantiles ",quantile((mae_ran$V1), probs = c(0.025,0.5,0.975))))
-  print(c("with obs. noise before ",mean(sqrt(mse_before$V1))))
-  print(c("with obs. noise after",mean(sqrt(mse_after$V1))))
   return(c(mse=mean(sqrt(mse_ran$V1)),mse_q025=quantile(sqrt(mse_ran$V1), probs = c(0.025)),mse_q975=quantile(sqrt(mse_ran$V1), probs = c(0.975)), 
            mse_before=mean(sqrt(mse_before$V1)),mse_before_q025=quantile(sqrt(mse_before$V1), probs = c(0.025)),mse_before_q975=quantile(sqrt(mse_before$V1), probs = c(0.975)), 
            mse_after=mean(sqrt(mse_after$V1)),mse_after_q025=quantile(sqrt(mse_after$V1), probs = c(0.025)),mse_after_q975=quantile(sqrt(mse_after$V1), probs = c(0.975))))
@@ -129,20 +120,20 @@ write_mse=function(this_mse, my_digits=0, my_subset=""){
 
 ############
 # EPIDEMIO
-hpd_trace=function(path,parameter, to_sum, my_digits=0){
+ci_trace=function(path,parameter, to_sum, my_digits=0){
   fileNames = list.files(path, pattern ="trace", full.names = T)
   fileDf = fread(fileNames[1], sep = ",", select = c(parameter))
   fileDf=mutate(fileDf,param=eval(parse(text = to_sum)))
   
-  my_hpd=quantile(fileDf$param, probs = c(0.5,0.025,0.975))
-  my_hpd=round(my_hpd,digits = my_digits)
-  return(paste0(my_hpd[1]," (",my_hpd[2],"-",my_hpd[3],")"))
+  my_ci=quantile(fileDf$param, probs = c(0.5,0.025,0.975))
+  my_ci=round(my_ci,digits = my_digits)
+  return(paste0(my_ci[1]," (",my_ci[2],"-",my_ci[3],")"))
 }  
 
 
 # Basic reproduction number
 R0_S0 = function(path){
-  fileNames = list.files(path, pattern = paste0("trace_1.csv"), full.names = T)
+  fileNames = list.files(path, pattern ="trace_1.csv", full.names = T)
   fileTrace = fread(fileNames[1], sep = ",")
   date=seq.Date(as.Date("2002-01-14"),as.Date("2003-01-14"),by="day")
   var_R0=matrix(nrow = length(date), ncol=dim(fileTrace)[1]+1)
@@ -153,21 +144,21 @@ R0_S0 = function(path){
   meanR=apply(var_R0, 2, mean)
   maxR=apply(var_R0, 2, max)
   
-  my_hpd_mean=quantile(meanR, probs=c(0.5,0.025,0.975))
-  my_hpd_mean=round(my_hpd_mean,digits = 2)
-  my_hpd_max=quantile(maxR, probs=c(0.5,0.025,0.975))
-  my_hpd_max=round(my_hpd_max,digits = 2)
-  return(list(mean=paste0(my_hpd_mean[1]," (",my_hpd_mean[2],"-",my_hpd_mean[3],")"),
-              max=paste0(my_hpd_max[1]," (",my_hpd_max[2],"-",my_hpd_max[3],")")))
+  my_ci_mean=quantile(meanR, probs=c(0.5,0.025,0.975))
+  my_ci_mean=round(my_ci_mean,digits = 2)
+  my_ci_max=quantile(maxR, probs=c(0.5,0.025,0.975))
+  my_ci_max=round(my_ci_max,digits = 2)
+  return(list(mean=paste0(my_ci_mean[1]," (",my_ci_mean[2],"-",my_ci_mean[3],")"),
+              max=paste0(my_ci_max[1]," (",my_ci_max[2],"-",my_ci_max[3],")")))
 }  
 
 
 # Effective reproduction number (two strain model)
 Reff_strains = function(path,N,S,S1,name){
-  fileNames = list.files(path, pattern = paste0("X_128.csv"), full.names = T)
+  fileNames = list.files(path, pattern = "X_128.csv", full.names = T)
   fileDf = fread(fileNames[1], sep = ",", select = c("date",S,S1,"index"))
   names(fileDf)=c("date","S","S1","index")
-  fileNames = list.files(path, pattern = paste0("trace_1.csv"), full.names = T)
+  fileNames = list.files(path, pattern = "trace_1.csv", full.names = T)
   fileTrace = fread(fileNames[1], sep = ",")
   fileTrace2=fileTrace[(index*1000/length(unique(index)))%%1==0]
   fileTrace2$index=seq(0:999)-1
@@ -184,20 +175,20 @@ Reff_strains = function(path,N,S,S1,name){
   meanR=apply(var_R0, 2, mean)
   maxR=apply(var_R0, 2, max)
   
-  my_hpd_mean=quantile(meanR, probs=c(0.5,0.025,0.975))
-  my_hpd_mean=round(my_hpd_mean,digits = 2)
-  my_hpd_max=quantile(maxR, probs=c(0.5,0.025,0.975))
-  my_hpd_max=round(my_hpd_max,digits = 2)
-  return(list(mean=paste0(my_hpd_mean[1]," (",my_hpd_mean[2],"-",my_hpd_mean[3],")"),
-              max=paste0(my_hpd_max[1]," (",my_hpd_max[2],"-",my_hpd_max[3],")")))
+  my_ci_mean=quantile(meanR, probs=c(0.5,0.025,0.975))
+  my_ci_mean=round(my_ci_mean,digits = 2)
+  my_ci_max=quantile(maxR, probs=c(0.5,0.025,0.975))
+  my_ci_max=round(my_ci_max,digits = 2)
+  return(list(mean=paste0(my_ci_mean[1]," (",my_ci_mean[2],"-",my_ci_mean[3],")"),
+              max=paste0(my_ci_max[1]," (",my_ci_max[2],"-",my_ci_max[3],")")))
 }  
 
 # Effective reproduction umber (two strain models with interaction (psi))
 Reff_strains_psi = function(path,N,S,S1, I2, I12,name){
-  fileNames = list.files(path, pattern = paste0("X_128.csv"), full.names = T)
+  fileNames = list.files(path, pattern = "X_128.csv", full.names = T)
   fileDf = fread(fileNames[1], sep = ",", select = c("date",S,S1,I2,I12,"index"))
   names(fileDf)=c("date","S","S1","I2","I12","index")
-  fileNames = list.files(path, pattern = paste0("trace_1.csv"), full.names = T)
+  fileNames = list.files(path, pattern = "trace_1.csv", full.names = T)
   fileTrace = fread(fileNames[1], sep = ",")
   fileTrace2=fileTrace[(index*1000/length(unique(index)))%%1==0]
   fileTrace2$index=seq(0:999)-1
@@ -214,12 +205,12 @@ Reff_strains_psi = function(path,N,S,S1, I2, I12,name){
   meanR=apply(var_R0, 2, mean)
   maxR=apply(var_R0, 2, max)
   
-  my_hpd_mean=quantile(meanR, probs=c(0.5,0.025,0.975))
-  my_hpd_mean=round(my_hpd_mean,digits = 2)
-  my_hpd_max=quantile(maxR, probs=c(0.5,0.025,0.975))
-  my_hpd_max=round(my_hpd_max,digits = 2)
-  return(list(mean=paste0(my_hpd_mean[1]," (",my_hpd_mean[2],"-",my_hpd_mean[3],")"),
-              max=paste0(my_hpd_max[1]," (",my_hpd_max[2],"-",my_hpd_max[3],")")))
+  my_ci_mean=quantile(meanR, probs=c(0.5,0.025,0.975))
+  my_ci_mean=round(my_ci_mean,digits = 2)
+  my_ci_max=quantile(maxR, probs=c(0.5,0.025,0.975))
+  my_ci_max=round(my_ci_max,digits = 2)
+  return(list(mean=paste0(my_ci_mean[1]," (",my_ci_mean[2],"-",my_ci_mean[3],")"),
+              max=paste0(my_ci_max[1]," (",my_ci_max[2],"-",my_ci_max[3],")")))
 }  
 
 
@@ -268,29 +259,29 @@ SEIR2psi_other_D1_RE=Reff_strains_psi(path=pathSEIR2_psi_paramB,N,S="S",S1="S2",
 SEIR2psi_other_D2_RE=Reff_strains_psi(pathSEIR2_psi_paramB,N,"S","S1","I2","I12",name="seir2psi_D2")
 
 # Susceptibles
-SEIR2_S=hpd_trace(pathSEIR2,"pr_S",to_sum = "pr_S*100")
-SEIR2psi_S=hpd_trace(pathSEIR2_psi,"pr_S",to_sum = "pr_S*100")
-SEIR2other_S=hpd_trace(pathSEIR2_paramB,"pr_S",to_sum = "pr_S*100")
-SEIR2psi_other_S=hpd_trace(pathSEIR2_psi_paramB,"pr_S",to_sum = "pr_S*100")
+SEIR2_S=ci_trace(pathSEIR2,"pr_S",to_sum = "pr_S*100")
+SEIR2psi_S=ci_trace(pathSEIR2_psi,"pr_S",to_sum = "pr_S*100")
+SEIR2other_S=ci_trace(pathSEIR2_paramB,"pr_S",to_sum = "pr_S*100")
+SEIR2psi_other_S=ci_trace(pathSEIR2_psi_paramB,"pr_S",to_sum = "pr_S*100")
 
-SEIR2_S1=hpd_trace(pathSEIR2,"pr_S1",to_sum = "pr_S1*100")
-SEIR2psi_S1=hpd_trace(pathSEIR2_psi,"pr_S1",to_sum = "pr_S1*100")
-SEIR2_S2=hpd_trace(pathSEIR2,"pr_S2",to_sum = "pr_S2*100")
-SEIR2psi_S2=hpd_trace(pathSEIR2_psi,"pr_S2",to_sum = "pr_S2*100")
+SEIR2_S1=ci_trace(pathSEIR2,"pr_S1",to_sum = "pr_S1*100")
+SEIR2psi_S1=ci_trace(pathSEIR2_psi,"pr_S1",to_sum = "pr_S1*100")
+SEIR2_S2=ci_trace(pathSEIR2,"pr_S2",to_sum = "pr_S2*100")
+SEIR2psi_S2=ci_trace(pathSEIR2_psi,"pr_S2",to_sum = "pr_S2*100")
 
-SEIR2other_S1=hpd_trace(pathSEIR2_paramB,"pr_S1",to_sum = "pr_S1*100")
-SEIR2psi_other_S1=hpd_trace(pathSEIR2_psi_paramB,"pr_S1",to_sum = "pr_S1*100")
-SEIR2other_S2=hpd_trace(pathSEIR2_paramB,"pr_S2",to_sum = "pr_S2*100")
-SEIR2psi_other_S2=hpd_trace(pathSEIR2_psi_paramB,"pr_S2",to_sum = "pr_S2*100")
+SEIR2other_S1=ci_trace(pathSEIR2_paramB,"pr_S1",to_sum = "pr_S1*100")
+SEIR2psi_other_S1=ci_trace(pathSEIR2_psi_paramB,"pr_S1",to_sum = "pr_S1*100")
+SEIR2other_S2=ci_trace(pathSEIR2_paramB,"pr_S2",to_sum = "pr_S2*100")
+SEIR2psi_other_S2=ci_trace(pathSEIR2_psi_paramB,"pr_S2",to_sum = "pr_S2*100")
 
 
-SEIR2_r=hpd_trace(pathSEIR2,"rep_ndss","rep_ndss*100")
-SEIR2psi_r=hpd_trace(pathSEIR2_psi,"rep_ndss","rep_ndss*100")
-SEIR2other_r=hpd_trace(pathSEIR2_paramB,"rep_ndss","rep_ndss*100")
-SEIR2psi_other_r=hpd_trace(pathSEIR2_psi_paramB,"rep_ndss","rep_ndss*100")
+SEIR2_r=ci_trace(pathSEIR2,"rep_ndss","rep_ndss*100")
+SEIR2psi_r=ci_trace(pathSEIR2_psi,"rep_ndss","rep_ndss*100")
+SEIR2other_r=ci_trace(pathSEIR2_paramB,"rep_ndss","rep_ndss*100")
+SEIR2psi_other_r=ci_trace(pathSEIR2_psi_paramB,"rep_ndss","rep_ndss*100")
 
-psi=hpd_trace(pathSEIR2_psi,"psi","psi", my_digits = 2)
-psi_other=hpd_trace(pathSEIR2_psi_paramB,"psi","psi", my_digits = 2)
+psi=ci_trace(pathSEIR2_psi,"psi","psi", my_digits = 2)
+psi_other=ci_trace(pathSEIR2_psi_paramB,"psi","psi", my_digits = 2)
 
 AR_seir2_I=epidemio_attack_rate(pathSEIR2,S=c("S"),to_sum_S="S",incidence=c("inc_I1","inc_I2"), to_sum="inc_I1+inc_I2")
 AR_seir3_I=epidemio_attack_rate(pathSEIR2_psi,S=c("S"),to_sum_S="S",incidence=c("inc_I1","inc_I2"), to_sum="inc_I1+inc_I2")

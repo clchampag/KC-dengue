@@ -15,14 +15,14 @@ pathSEIR2_psi = paste(ROOT,"/SEIR2-psi", sep="")
 datapath = paste(ROOT,"/../analysis/", sep="")
 N=161391
 
-hpd_trace=function(path,parameter, to_sum, my_digits=0){
+ci_trace=function(path,parameter, to_sum, my_digits=0){
   fileNames = list.files(file.path(path,"mcmc"), pattern ="trace", full.names = T)
   fileDf = fread(fileNames[1], sep = ",", select = c(parameter))
   fileDf=mutate(fileDf,param=eval(parse(text = to_sum)))
   
-  my_hpd=quantile(fileDf$param, probs = c(0.5,0.025,0.975))
-  my_hpd=round(my_hpd,digits = my_digits)
-  return(paste0(my_hpd[1]," (",my_hpd[2],"-",my_hpd[3],")"))
+  my_ci=quantile(fileDf$param, probs = c(0.5,0.025,0.975))
+  my_ci=round(my_ci,digits = my_digits)
+  return(paste0(my_ci[1]," (",my_ci[2],"-",my_ci[3],")"))
 }  
 
 
@@ -39,12 +39,12 @@ R0_S0 = function(path){
   meanR=apply(var_R0, 2, mean)
   maxR=apply(var_R0, 2, max)
   
-  my_hpd_mean=quantile(meanR, probs=c(0.5,0.025,0.975))
-  my_hpd_mean=round(my_hpd_mean,digits = 2)
-  my_hpd_max=quantile(maxR, probs=c(0.5,0.025,0.975))
-  my_hpd_max=round(my_hpd_max,digits = 2)
-  return(list(mean=paste0(my_hpd_mean[1]," (",my_hpd_mean[2],"-",my_hpd_mean[3],")"),
-              max=paste0(my_hpd_max[1]," (",my_hpd_max[2],"-",my_hpd_max[3],")")))
+  my_ci_mean=quantile(meanR, probs=c(0.5,0.025,0.975))
+  my_ci_mean=round(my_ci_mean,digits = 2)
+  my_ci_max=quantile(maxR, probs=c(0.5,0.025,0.975))
+  my_ci_max=round(my_ci_max,digits = 2)
+  return(list(mean=paste0(my_ci_mean[1]," (",my_ci_mean[2],"-",my_ci_mean[3],")"),
+              max=paste0(my_ci_max[1]," (",my_ci_max[2],"-",my_ci_max[3],")")))
 }  
 
 # Effective reproduction umber (one strain models)
@@ -68,12 +68,12 @@ reff_onestrain = function(path,N,S,name){
   meanR=apply(var_R0, 2, mean)
   maxR=apply(var_R0, 2, max)
   
-  my_hpd_mean=quantile(meanR, probs=c(0.5,0.025,0.975))
-  my_hpd_mean=round(my_hpd_mean,digits = 2)
-  my_hpd_max=quantile(maxR, probs=c(0.5,0.025,0.975))
-  my_hpd_max=round(my_hpd_max,digits = 2)
-  return(list(mean=paste0(my_hpd_mean[1]," (",my_hpd_mean[2],"-",my_hpd_mean[3],")"),
-              max=paste0(my_hpd_max[1]," (",my_hpd_max[2],"-",my_hpd_max[3],")")))
+  my_ci_mean=quantile(meanR, probs=c(0.5,0.025,0.975))
+  my_ci_mean=round(my_ci_mean,digits = 2)
+  my_ci_max=quantile(maxR, probs=c(0.5,0.025,0.975))
+  my_ci_max=round(my_ci_max,digits = 2)
+  return(list(mean=paste0(my_ci_mean[1]," (",my_ci_mean[2],"-",my_ci_mean[3],")"),
+              max=paste0(my_ci_max[1]," (",my_ci_max[2],"-",my_ci_max[3],")")))
 }  
 
 # Effective reproduction umber (Pandey model)
@@ -96,12 +96,12 @@ Reff_pandey = function(path,N,name){
   meanR=apply(var_R0, 2, mean)
   maxR=apply(var_R0, 2, max)
   
-  my_hpd_mean=quantile(meanR, probs=c(0.5,0.025,0.975))
-  my_hpd_mean=round(my_hpd_mean,digits = 2)
-  my_hpd_max=quantile(maxR, probs=c(0.5,0.025,0.975))
-  my_hpd_max=round(my_hpd_max,digits = 2)
-  return(list(mean=paste0(my_hpd_mean[1]," (",my_hpd_mean[2],"-",my_hpd_mean[3],")"),
-              max=paste0(my_hpd_max[1]," (",my_hpd_max[2],"-",my_hpd_max[3],")")))
+  my_ci_mean=quantile(meanR, probs=c(0.5,0.025,0.975))
+  my_ci_mean=round(my_ci_mean,digits = 2)
+  my_ci_max=quantile(maxR, probs=c(0.5,0.025,0.975))
+  my_ci_max=round(my_ci_max,digits = 2)
+  return(list(mean=paste0(my_ci_mean[1]," (",my_ci_mean[2],"-",my_ci_mean[3],")"),
+              max=paste0(my_ci_max[1]," (",my_ci_max[2],"-",my_ci_max[3],")")))
 }  
 
 # Effective reproduction number (two strain model)
@@ -126,12 +126,12 @@ Reff_strains = function(path,N,S,S1,name){
   meanR=apply(var_R0, 2, mean)
   maxR=apply(var_R0, 2, max)
   
-  my_hpd_mean=quantile(meanR, probs=c(0.5,0.025,0.975))
-  my_hpd_mean=round(my_hpd_mean,digits = 2)
-  my_hpd_max=quantile(maxR, probs=c(0.5,0.025,0.975))
-  my_hpd_max=round(my_hpd_max,digits = 2)
-  return(list(mean=paste0(my_hpd_mean[1]," (",my_hpd_mean[2],"-",my_hpd_mean[3],")"),
-              max=paste0(my_hpd_max[1]," (",my_hpd_max[2],"-",my_hpd_max[3],")")))
+  my_ci_mean=quantile(meanR, probs=c(0.5,0.025,0.975))
+  my_ci_mean=round(my_ci_mean,digits = 2)
+  my_ci_max=quantile(maxR, probs=c(0.5,0.025,0.975))
+  my_ci_max=round(my_ci_max,digits = 2)
+  return(list(mean=paste0(my_ci_mean[1]," (",my_ci_mean[2],"-",my_ci_mean[3],")"),
+              max=paste0(my_ci_max[1]," (",my_ci_max[2],"-",my_ci_max[3],")")))
 }  
 
 # Effective reproduction umber (two strain models with interaction (psi))
@@ -156,12 +156,12 @@ Reff_strains_psi = function(path,N,S,S1, name){
   meanR=apply(var_R0, 2, mean)
   maxR=apply(var_R0, 2, max)
   
-  my_hpd_mean=quantile(meanR, probs=c(0.5,0.025,0.975))
-  my_hpd_mean=round(my_hpd_mean,digits = 2)
-  my_hpd_max=quantile(maxR, probs=c(0.5,0.025,0.975))
-  my_hpd_max=round(my_hpd_max,digits = 2)
-  return(list(mean=paste0(my_hpd_mean[1]," (",my_hpd_mean[2],"-",my_hpd_mean[3],")"),
-              max=paste0(my_hpd_max[1]," (",my_hpd_max[2],"-",my_hpd_max[3],")")))
+  my_ci_mean=quantile(meanR, probs=c(0.5,0.025,0.975))
+  my_ci_mean=round(my_ci_mean,digits = 2)
+  my_ci_max=quantile(maxR, probs=c(0.5,0.025,0.975))
+  my_ci_max=round(my_ci_max,digits = 2)
+  return(list(mean=paste0(my_ci_mean[1]," (",my_ci_mean[2],"-",my_ci_mean[3],")"),
+              max=paste0(my_ci_max[1]," (",my_ci_max[2],"-",my_ci_max[3],")")))
 }  
 
 
@@ -213,35 +213,35 @@ SEIR2psi_D2_RE=Reff_strains_psi(pathSEIR2_psi,N,"S","S1",name="seir2psi_D2")
 
 
 # Susceptibles
-SEIR_S=hpd_trace(pathSEIR,"pr_S",to_sum = "pr_S*100")
-Laneri_S=hpd_trace(pathLaneri,"pr_S",to_sum = "pr_S*100")
-Pandey_S=hpd_trace(pathPandey,"pr_Hs",to_sum = "pr_Hs*100")
-SEIAR_S=hpd_trace(pathSEIAR,"pr_S",to_sum = "pr_S*100")
-SEIR2_S=hpd_trace(pathSEIR2,"pr_S",to_sum = "pr_S*100")
-SEIR2psi_S=hpd_trace(pathSEIR2_psi,"pr_S",to_sum = "pr_S*100")
+SEIR_S=ci_trace(pathSEIR,"pr_S",to_sum = "pr_S*100")
+Laneri_S=ci_trace(pathLaneri,"pr_S",to_sum = "pr_S*100")
+Pandey_S=ci_trace(pathPandey,"pr_Hs",to_sum = "pr_Hs*100")
+SEIAR_S=ci_trace(pathSEIAR,"pr_S",to_sum = "pr_S*100")
+SEIR2_S=ci_trace(pathSEIR2,"pr_S",to_sum = "pr_S*100")
+SEIR2psi_S=ci_trace(pathSEIR2_psi,"pr_S",to_sum = "pr_S*100")
 
-SEIR2_S1=hpd_trace(pathSEIR2,"pr_S1",to_sum = "pr_S1*100")
-SEIR2psi_S1=hpd_trace(pathSEIR2_psi,"pr_S1",to_sum = "pr_S1*100")
-SEIR2_S2=hpd_trace(pathSEIR2,"pr_S2",to_sum = "pr_S2*100")
-SEIR2psi_S2=hpd_trace(pathSEIR2_psi,"pr_S2",to_sum = "pr_S2*100")
+SEIR2_S1=ci_trace(pathSEIR2,"pr_S1",to_sum = "pr_S1*100")
+SEIR2psi_S1=ci_trace(pathSEIR2_psi,"pr_S1",to_sum = "pr_S1*100")
+SEIR2_S2=ci_trace(pathSEIR2,"pr_S2",to_sum = "pr_S2*100")
+SEIR2psi_S2=ci_trace(pathSEIR2_psi,"pr_S2",to_sum = "pr_S2*100")
 
 
-SEIR_r=hpd_trace(pathSEIR,"rep_ndss","rep_ndss*100")
-Laneri_r=hpd_trace(pathLaneri,"rep_ndss","rep_ndss*100")
-Pandey_r=hpd_trace(pathPandey,"rep_ndss","rep_ndss*100")
-SEIAR_rh=hpd_trace(pathSEIAR,"rho_h","rho_h*100")
-SEIAR_ra=hpd_trace(pathSEIAR,"rho_a","rho_a*100")
-SEIR2_r=hpd_trace(pathSEIR2,"rep_ndss","rep_ndss*100")
-SEIR2psi_r=hpd_trace(pathSEIR2_psi,"rep_ndss","rep_ndss*100")
+SEIR_r=ci_trace(pathSEIR,"rep_ndss","rep_ndss*100")
+Laneri_r=ci_trace(pathLaneri,"rep_ndss","rep_ndss*100")
+Pandey_r=ci_trace(pathPandey,"rep_ndss","rep_ndss*100")
+SEIAR_rh=ci_trace(pathSEIAR,"rho_h","rho_h*100")
+SEIAR_ra=ci_trace(pathSEIAR,"rho_a","rho_a*100")
+SEIR2_r=ci_trace(pathSEIR2,"rep_ndss","rep_ndss*100")
+SEIR2psi_r=ci_trace(pathSEIR2_psi,"rep_ndss","rep_ndss*100")
 
-psi=hpd_trace(pathSEIR2_psi,"psi","psi", my_digits = 2)
+psi=ci_trace(pathSEIR2_psi,"psi","psi", my_digits = 2)
 
-SEIR_disp=hpd_trace(pathSEIR,"disp","disp", my_digits = 2)
-Laneri_disp=hpd_trace(pathLaneri,"disp","disp", my_digits = 2)
-Pandey_disp=hpd_trace(pathPandey,"disp","disp", my_digits = 2)
-SEIAR_disp=hpd_trace(pathSEIAR,"disp","disp", my_digits = 2)
-SEIR2_disp=hpd_trace(pathSEIR2,"disp","disp", my_digits = 2)
-SEIR2psi_disp=hpd_trace(pathSEIR2_psi,"disp","disp", my_digits = 2)
+SEIR_disp=ci_trace(pathSEIR,"disp","disp", my_digits = 2)
+Laneri_disp=ci_trace(pathLaneri,"disp","disp", my_digits = 2)
+Pandey_disp=ci_trace(pathPandey,"disp","disp", my_digits = 2)
+SEIAR_disp=ci_trace(pathSEIAR,"disp","disp", my_digits = 2)
+SEIR2_disp=ci_trace(pathSEIR2,"disp","disp", my_digits = 2)
+SEIR2psi_disp=ci_trace(pathSEIR2_psi,"disp","disp", my_digits = 2)
 
 
 
