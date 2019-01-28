@@ -1,4 +1,4 @@
-theta_seir <- list(
+priors_seir <- list(
   R0 =list(dist="unif",args=list(min = 0, max = 20)), 
   beta1 = list(dist="unif",args=list(min = 0, max = 1)), 
   i =list(dist="unif",args=list(min = 0, max = 10)), 
@@ -21,7 +21,7 @@ priors_laneri <- list(
 )
 
 
-theta_pandey <- list(
+priors_pandey <- list(
   i =list(dist="unif",args=list(min = 0, max = 10)), 
   pr_Hi =list(dist="unif",args=list(min = 0, max = 100)), 
   pr_Hs =list(dist="truncnorm",args=list(a = 0.2, b = 1, mean=0.44, sd=0.05)), 
@@ -33,7 +33,7 @@ theta_pandey <- list(
   baV = list(dist="unif",args=list(min=0.1, max=2))
 )
 
-theta_seiar <- list(
+priors_seiar <- list(
   R0 =list(dist="unif",args=list(min = 0, max = 20)), 
   beta1 = list(dist="unif",args=list(min = 0, max = 1)), 
   i =list(dist="unif",args=list(min = 0, max = 10)), 
@@ -46,7 +46,7 @@ theta_seiar <- list(
   pr_I =list(dist="unif",args=list(min = 0, max = 100))
 )
 
-theta_seir2 <- list(
+priors_seir2 <- list(
   R0 =list(dist="unif",args=list(min = 0, max = 20)), 
   beta1 = list(dist="unif",args=list(min = 0, max = 1)), 
   rep_ndss = list(dist="unif",args=list(min = 0, max = 1)), 
@@ -60,7 +60,7 @@ theta_seir2 <- list(
   pr_I2 = list(dist="unif",args=list(min = 0, max = 100))
 )
 
-theta_seir2psi <- list(
+priors_seir2psi <- list(
   R0 =list(dist="unif",args=list(min = 0, max = 20)), 
   beta1 = list(dist="unif",args=list(min = 0, max = 1)), 
   rep_ndss = list(dist="unif",args=list(min = 0, max = 1)), 
